@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{ccf9488e-b171-43f3-97b5-ade266f307a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{1f3a8c05-1cea-4542-91ce-f0b9b1891d8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{0ed4d2e7-8698-4eab-b642-b0e0295e3e77}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Console.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="model\Map.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="model\Point.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="model\Pos.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="model\Snake.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameCtrl.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Console.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\util.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Direction.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Map.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Point.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Pos.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\Snake.h">
+      <Filter>model</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
