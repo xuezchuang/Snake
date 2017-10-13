@@ -1,6 +1,6 @@
-#include "model/Snake.h"
-#include "util/util.h"
-#include "GameCtrl.h"
+#include "Snake.h"
+#include "../util/util.h"
+#include "../GameCtrl.h"
 #include <queue>
 #include <algorithm>
 #include <stdexcept>
@@ -10,7 +10,13 @@ using std::list;
 using std::queue;
 using util::Random;
 
-Snake::Snake() {}
+Snake::Snake()
+{
+	map = nullptr;
+	direc = NONE;
+	dead = false;
+	hamiltonEnabled = false;
+}
 
 Snake::~Snake() {}
 
@@ -65,11 +71,14 @@ void Snake::testHamilton() {
     }
 }
 
-void Snake::addBody(const Pos &p) {
-    if (bodies.size() == 0) {  // Insert a head
-        map->getPoint(p).setType(Point::Type::SNAKE_HEAD);
-    } else {  // Insert a body
-        if (bodies.size() > 1) {
+void Snake::addBody(const Pos &p)
+{
+    if (bodies.size() == 0) // Insert a head
+		map->getPoint(p).setType(Point::Type::SNAKE_HEAD);
+     else 
+	{  // Insert a body
+        if (bodies.size() > 1)
+		{
             const Pos &oldTail = getTail();
             map->getPoint(oldTail).setType(Point::Type::SNAKE_BODY);
         }
@@ -164,16 +173,19 @@ void Snake::decideNext() {
         tmpSnake.setMap(&tmpMap);
         // Step 1
         tmpSnake.findMinPathToFood(pathToFood);
-        if (!pathToFood.empty()) {
-            // Step 2
+        if (!pathToFood.empty())
+		{// Step 2 
             tmpSnake.move(pathToFood);
-            if (tmpMap.isAllBody()) {
+            if (tmpMap.isAllBody()) 
+			{
                 this->setDirection(*(pathToFood.begin()));
                 return;
-            } else {
-                // Step 3
+            } 
+			else
+			{// Step 3
                 tmpSnake.findMaxPathToTail(pathToTail);
-                if (pathToTail.size() > 1) {
+                if (pathToTail.size() > 1) 
+				{
                     this->setDirection(*(pathToFood.begin()));
                     return;
                 }
@@ -251,12 +263,14 @@ void Snake::findMinPath(const Pos &from, const Pos &to, list<Direction> &path) {
     queue<Pos> openList;
     openList.push(from);
     // BFS
-    while (!openList.empty()) {
+    while (!openList.empty()) 
+	{
         Pos curPos = openList.front();
         const Point &curPoint = map->getPoint(curPos);
         openList.pop();
         map->showPos(curPos);
-        if (curPos == to) {
+        if (curPos == to) 
+		{
             buildPath(from, to, path);
             break;
         }
@@ -264,16 +278,20 @@ void Snake::findMinPath(const Pos &from, const Pos &to, list<Direction> &path) {
         Random<>::getInstance()->shuffle(adjPositions.begin(), adjPositions.end());
         // Arrange the order of traversing to make the result path as straight as possible
         Direction bestDirec = (curPos == from ? direc : curPoint.getParent().getDirectionTo(curPos));
-        for (SizeType i = 0; i < adjPositions.size(); ++i) {
-            if (bestDirec == curPos.getDirectionTo(adjPositions[i])) {
+        for (SizeType i = 0; i < adjPositions.size(); ++i) 
+		{
+            if (bestDirec == curPos.getDirectionTo(adjPositions[i])) 
+			{
                 util::swap(adjPositions[0], adjPositions[i]);
                 break;
             }
         }
         // Traverse the adjacent positions
-        for (const Pos &adjPos : adjPositions) {
+        for (const Pos &adjPos : adjPositions)
+		{
             Point &adjPoint = map->getPoint(adjPos);
-            if (map->isEmpty(adjPos) && adjPoint.getDist() == Point::MAX_VALUE) {
+            if (map->isEmpty(adjPos) && adjPoint.getDist() == Point::MAX_VALUE) 
+			{
                 adjPoint.setParent(curPos);
                 adjPoint.setDist(curPoint.getDist() + 1);
                 openList.push(adjPos);

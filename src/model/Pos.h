@@ -1,7 +1,7 @@
 #ifndef SNAKE_POS_H_
 #define SNAKE_POS_H_
 
-#include "model/Direction.h"
+#include "Direction.h"
 #include <vector>
 #include <string>
 #include <cstddef>

@@ -1,7 +1,7 @@
 #ifndef SNAKE_POINT_H_
 #define SNAKE_POINT_H_
 
-#include "model/Pos.h"
+#include "Pos.h"
 #include <cstdint>
 
 /*
@@ -39,7 +39,7 @@ public:
     ValueType getIndex() const;
 
 private:
-    Type type = EMPTY;
+    Type type;
     Pos parent;
     bool visit;
     ValueType dist;

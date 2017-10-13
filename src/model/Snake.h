@@ -1,7 +1,7 @@
 #ifndef SNAKE_SNAKE_H_
 #define SNAKE_SNAKE_H_
 
-#include "model/Map.h"
+#include "Map.h"
 
 /*
 Game snake.
@@ -55,13 +55,13 @@ public:
     void decideNext();
 
 private:
-    Map *map = nullptr;
+    Map *map;
     std::list<Pos> bodies;
 
-    Direction direc = NONE;
+    Direction direc;
 
-    bool dead = false;
-    bool hamiltonEnabled = false;
+    bool dead;
+    bool hamiltonEnabled;
 
     /*
     Remove the snake tail.

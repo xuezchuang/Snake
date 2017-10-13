@@ -48,22 +48,22 @@ private:
     static const std::string MSG_ESC;
     static const std::string MAP_INFO_FILENAME;
 
-    double fps = 60.0;
-    bool enableAI = true;
-    bool enableHamilton = true;
-    long moveInterval = 30;
-    bool recordMovements = true;
-    bool runTest = false;
-    SizeType mapRowCnt = 10;
-    SizeType mapColCnt = 10;
+    double fps;
+    bool enableAI;
+    bool enableHamilton;
+    long moveInterval;
+    bool recordMovements;
+    bool runTest;
+    SizeType mapRowCnt;
+    SizeType mapColCnt;
 
-    Map *map = nullptr;
+    Map *map;
     Snake snake;
 
-    volatile bool pause = false;  // Control pause/resume game
+    volatile bool pause;  // Control pause/resume game
 
-    volatile bool runMainThread = true;  // Switch of the main thread
-    volatile bool runSubThread = true;   // Switch of sub-threads
+    volatile bool runMainThread;  // Switch of the main thread
+    volatile bool runSubThread;   // Switch of sub-threads
 
     std::thread drawThread;      // Thread to draw the map
     std::thread keyboardThread;  // Thread to receive keyboard instructions
@@ -72,7 +72,7 @@ private:
     std::mutex mutexMove;  // Mutex of moveSnake()
     std::mutex mutexExit;  // Mutex of exitGame()
 
-    FILE *movementFile = nullptr;  // File to save snake movements
+    FILE *movementFile;  // File to save snake movements
 
     GameCtrl();
 

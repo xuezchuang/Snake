@@ -91,12 +91,13 @@ public:
     @param end The iterator of the element after the last element
     */
     template<typename RanIt>
-    void shuffle(RanIt beg, RanIt end) {
-        if (end - beg > 1) {
+    void shuffle(RanIt beg, RanIt end) 
+	{
+        if (end - beg > 1) 
+		{
             std::size_t i = end - beg - 1;
-            for (RanIt it = end - 1; it != beg; --it, --i) {
+            for (RanIt it = end - 1; it != beg; --it, --i)
                 swap(*it, *(beg + nextInt<decltype(i)>(0, i)));
-            }
         }
     }
 private:

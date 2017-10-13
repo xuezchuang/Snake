@@ -1,7 +1,7 @@
 #ifndef SNAKE_MAP_H_
 #define SNAKE_MAP_H_
 
-#include "model/Point.h"
+#include "Point.h"
 #include <list>
 
 /*
@@ -78,7 +78,7 @@ private:
     SizeType size;
     Pos food;
 
-    bool testEnabled = false;
+    bool testEnabled;
 
     /*
     Return all empty positions.
