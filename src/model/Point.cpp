@@ -1,6 +1,9 @@
-#include "model/Point.h"
+#include "Point.h"
 
-Point::Point() {}
+Point::Point() 
+{
+	type = EMPTY;
+}
 
 Point::~Point() {}
 

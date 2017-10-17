@@ -1,4 +1,4 @@
-#include "util/Console.h"
+#include "Console.h"
 #include <cstdio>
 #include <cstdlib>
 #ifdef LINUX_OR_APPLE

@@ -1,5 +1,5 @@
-#include "model/Pos.h"
-#include "util/util.h"
+#include "Pos.h"
+#include "../util/util.h"
 
 Pos::Pos(const SizeType x_, const SizeType y_) : x(x_), y(y_) {}
 
@@ -78,11 +78,11 @@ Pos Pos::getAdj(const Direction d) const {
 
 std::vector<Pos> Pos::getAllAdj() const {
     std::vector<Pos> adj;
-    for (int i = 1; i <= 4; ++i) {
+    for (int i = 1; i <= 4; ++i)
+	{
         Pos p = getAdj((Direction)i);
-        if (p != *this) {
-            adj.push_back(p);
-        }
+        if (p != *this) 
+            adj.push_back(p); 
     }
     return adj;
 }

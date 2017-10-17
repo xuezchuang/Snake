@@ -17,7 +17,25 @@ const string GameCtrl::MSG_WIN = "Congratulations! You Win!";
 const string GameCtrl::MSG_ESC = "Game ended.";
 const string GameCtrl::MAP_INFO_FILENAME = "movements.txt";
 
-GameCtrl::GameCtrl() {}
+GameCtrl::GameCtrl()
+{
+	fps = 60.0;
+	enableAI = true;
+	enableHamilton = true;
+	moveInterval = 30;
+	recordMovements = true;
+	runTest = false;
+	mapRowCnt = 10;
+	mapColCnt = 10;
+
+	map = nullptr;
+
+	pause = false;  
+
+	runMainThread = true;  
+	runSubThread = true;  
+	movementFile = nullptr;
+}
 
 GameCtrl::~GameCtrl() {
     delete map;
@@ -66,11 +84,11 @@ void GameCtrl::setMapCol(const SizeType n) {
 }
 
 int GameCtrl::run() {
-    try {
+    try 
+	{
         init();
-        if (runTest) {
+        if (runTest) 
             test();
-        }
         while (runMainThread) {}
         return 0;
     } catch (const std::exception &e) {
@@ -90,6 +108,7 @@ void GameCtrl::exitGame(const std::string &msg) {
         runSubThread = false;
         util::sleep(100);
         printMsg(msg);
+		util::sleep(3000);
     }
     mutexExit.unlock();
     runMainThread = false;
@@ -161,7 +180,8 @@ void GameCtrl::writeMapToFile() const {
 void GameCtrl::init() {
     Console::clear();
     initMap();
-    if (!runTest) {
+    if (!runTest)
+	{
         initSnake();
         if (recordMovements) {
             initFiles();
@@ -220,17 +240,18 @@ void GameCtrl::startThreads() {
 }
 
 void GameCtrl::draw() {
-    try {
-        while (runSubThread) {
-            drawMapContent();
-            sleepFPS();
-        }
-    } catch (const std::exception &e) {
-        exitGameErr(e.what());
+	try {
+		while (runSubThread) {
+			drawMapContent();
+			sleepFPS();
+		}
+	} catch (const std::exception &e) {
+		exitGameErr(e.what());
     }
 }
 
-void GameCtrl::drawMapContent() const {
+void GameCtrl::drawMapContent() const 
+{
     Console::setCursor();
     SizeType row = map->getRowCount(), col = map->getColCount();
     for (SizeType i = 0; i < row; ++i) {
@@ -332,31 +353,35 @@ void GameCtrl::keyboardMove(Snake &s, const Direction d) {
     }
 }
 
-void GameCtrl::autoMove() {
-    try {
-        while (runSubThread) {
+void GameCtrl::autoMove() 
+{
+    try
+	{
+		while (runSubThread) 
+		{
             util::sleep(moveInterval);
-            if (!pause) {
-                if (enableAI) {
+            if (!pause) 
+			{
+                if (enableAI) 
                     snake.decideNext();
-                }
                 moveSnake();
             }
-        }
-    } catch (const std::exception &e) {
-        exitGameErr(e.what());
-    }
+		}
+	}catch (const std::exception &e){
+		exitGameErr(e.what());}
 }
 
-void GameCtrl::test() {
-    //testFood();
-    testSearch();
+void GameCtrl::test() 
+{
+    testFood();
+    //testSearch();
     //testHamilton();
 }
 
 void GameCtrl::testFood() {
     SizeType cnt = 0;
-    while (runMainThread && cnt++ < map->getSize()) {
+    while (runMainThread && cnt++ < map->getSize())
+	{
         map->createRandFood();
         sleepFPS();
     }
