@@ -87,27 +87,30 @@ void Snake::addBody(const Pos &p)
     bodies.push_back(p);
 }
 
-void Snake::move() {
-    if (isDead() || direc == NONE) {
+void Snake::move() 
+{
+    if (isDead() || direc == NONE)
         return;
-    }
+    
     map->getPoint(getHead()).setType(Point::Type::SNAKE_BODY);
     Pos newHead = getHead().getAdj(direc);
     bodies.push_front(newHead);
-    if (!map->isSafe(newHead)) {
+	
+    if (!map->isSafe(newHead)) 
         dead = true;
-    } else {
-        if (map->getPoint(newHead).getType() != Point::Type::FOOD) {
+     else 
+	 {
+        if (map->getPoint(newHead).getType() != Point::Type::FOOD) 
             removeTail();
-        } else {
+        else 
             map->removeFood();
-        }
     }
     map->getPoint(newHead).setType(Point::Type::SNAKE_HEAD);
 }
 
 void Snake::move(const std::list<Direction> &path) {
-    for (const Direction &d : path) {
+    for (const Direction &d : path) 
+	{
         setDirection(d);
         move();
     }
@@ -136,36 +139,40 @@ void Snake::decideNext() {
         Point::ValueType tailIndex = map->getPoint(tail).getIndex();
         Point::ValueType headIndex = map->getPoint(head).getIndex();
         // Try to take shortcuts when the snake is not long enough
-        if (bodies.size() < size * 3 / 4) {
-            list<Direction> minPath;
-            findMinPathToFood(minPath);
-            if (!minPath.empty()) {
-                Direction nextDirec = *minPath.begin();
-                Pos nextPos = head.getAdj(nextDirec);
-                Point::ValueType nextIndex = map->getPoint(nextPos).getIndex();
-                Point::ValueType foodIndex = map->getPoint(map->getFood()).getIndex();
-                headIndex = util::getDistance(tailIndex, headIndex, (Point::ValueType)size);
-                nextIndex = util::getDistance(tailIndex, nextIndex, (Point::ValueType)size);
-                foodIndex = util::getDistance(tailIndex, foodIndex, (Point::ValueType)size);
-                if (nextIndex > headIndex && nextIndex <= foodIndex) {
-                    direc = nextDirec;
-                    return;
-                }
-            }
-        }
+		if (bodies.size() < size * 3 / 4)
+		{
+			list<Direction> minPath;
+			findMinPathToFood(minPath);
+			if (!minPath.empty()) 
+			{
+				Direction nextDirec = *minPath.begin();
+				Pos nextPos = head.getAdj(nextDirec);
+				Point::ValueType nextIndex = map->getPoint(nextPos).getIndex();
+				Point::ValueType foodIndex = map->getPoint(map->getFood()).getIndex();
+				headIndex = util::getDistance(tailIndex, headIndex, (Point::ValueType)size);
+				nextIndex = util::getDistance(tailIndex, nextIndex, (Point::ValueType)size);
+				foodIndex = util::getDistance(tailIndex, foodIndex, (Point::ValueType)size);
+				if (nextIndex > headIndex && nextIndex <= foodIndex)
+				{
+					direc = nextDirec;
+					return;
+				}
+			}
+		}
         // Move along the hamitonian cycle
         headIndex = map->getPoint(head).getIndex();
         vector<Pos> adjPositions = head.getAllAdj();
-        for (const Pos &adjPos : adjPositions) {
+        for (const Pos &adjPos : adjPositions)
+		{
             const Point &adjPoint = map->getPoint(adjPos);
             Point::ValueType adjIndex = adjPoint.getIndex();
-            if (adjIndex == (headIndex + 1) % size) {
+            if (adjIndex == (headIndex + 1) % size) 
                 direc = head.getDirectionTo(adjPos);
-            }
         }
 
-    } else {  // AI based on graph search
-
+    } 
+	else 
+	{  // AI based on graph search
         list<Direction> pathToFood, pathToTail;
         // Create a virtual snake
         Map tmpMap = *map;
@@ -193,7 +200,8 @@ void Snake::decideNext() {
         }
         // Step 4
         this->findMaxPathToTail(pathToTail);
-        if (pathToTail.size() > 1) {
+        if (pathToTail.size() > 1)
+		{
             this->setDirection(*(pathToTail.begin()));
             return;
         }
@@ -202,16 +210,16 @@ void Snake::decideNext() {
         SizeType max = 0;
         Pos head = getHead();
         vector<Pos> adjPositions = head.getAllAdj();
-        for (const Pos &adjPos : adjPositions) {
-            if (map->isSafe(adjPos)) {
+        for (const Pos &adjPos : adjPositions) 
+            if (map->isSafe(adjPos))
+			{
                 SizeType dist = Map::distance(adjPos, map->getFood());
-                if (dist >= max) {
+                if (dist >= max) 
+				{
                     max = dist;
                     direc = head.getDirectionTo(adjPos);
                 }
             }
-        }
-
     }
 }
 
@@ -223,12 +231,13 @@ const Pos& Snake::getTail() const {
     return *bodies.rbegin();
 }
 
-void Snake::removeTail() {
+void Snake::removeTail() 
+{
     map->getPoint(getTail()).setType(Point::Type::EMPTY);
     bodies.pop_back();
-    if (bodies.size() > 1) {
+    if (bodies.size() > 1) 
         map->getPoint(getTail()).setType(Point::Type::SNAKE_TAIL);
-    }
+    
 }
 
 void Snake::findMinPathToFood(list<Direction> &path) {
@@ -242,22 +251,21 @@ void Snake::findMaxPathToTail(list<Direction> &path) {
 void Snake::findPathTo(const int pathType, const Pos &goal, list<Direction> &path) {
     Point::Type oriType = map->getPoint(goal).getType();
     map->getPoint(goal).setType(Point::Type::EMPTY);
-    if (pathType == 0) {
+    if (pathType == 0)
         findMinPath(getHead(), goal, path);
-    } else if (pathType == 1) {
+     else if (pathType == 1)
         findMaxPath(getHead(), goal, path);
-    }
+    
     map->getPoint(goal).setType(oriType);  // Retore point type
 }
 
 void Snake::findMinPath(const Pos &from, const Pos &to, list<Direction> &path) {
     // Init
     SizeType row = map->getRowCount(), col = map->getColCount();
-    for (SizeType i = 1; i < row - 1; ++i) {
-        for (SizeType j = 1; j < col - 1; ++j) {
+    for (SizeType i = 1; i < row - 1; ++i)
+        for (SizeType j = 1; j < col - 1; ++j) 
             map->getPoint(Pos(i, j)).setDist(Point::MAX_VALUE);
-        }
-    }
+
     path.clear();
     map->getPoint(from).setDist(0);
     queue<Pos> openList;
@@ -308,33 +316,38 @@ void Snake::findMaxPath(const Pos &from, const Pos &to, list<Direction> &path) {
     map->setTestEnabled(oriEnabled);
     // Init
     SizeType row = map->getRowCount(), col = map->getColCount();
-    for (SizeType i = 1; i < row - 1; ++i) {
-        for (SizeType j = 1; j < col - 1; ++j) {
+    for (SizeType i = 1; i < row - 1; ++i) 
+        for (SizeType j = 1; j < col - 1; ++j)
             map->getPoint(Pos(i, j)).setVisit(false);
-        }
-    }
+        
+    
     // Make all points on the path visited
     Pos cur = from;
-    for (const Direction d : path) {
+    for (const Direction d : path) 
+	{
         map->getPoint(cur).setVisit(true);
         cur = cur.getAdj(d);
     }
     map->getPoint(cur).setVisit(true);
     // Extend the path between each pair of the points
-    for (auto it = path.begin(); it != path.end();) {
-        if (it == path.begin()) {
+    for (auto it = path.begin(); it != path.end();)
+	{
+        if (it == path.begin()) 
             cur = from;
-        }
+        
         bool extended = false;
         Direction curDirec = *it;
         Pos next = cur.getAdj(curDirec);
-        switch (curDirec) {
+        switch (curDirec)
+		{
             case LEFT:
-            case RIGHT: {
+            case RIGHT:
+			{
                 Pos curUp = cur.getAdj(UP);
                 Pos nextUp = next.getAdj(UP);
                 // Check two points above
-                if (map->isEmptyNotVisit(curUp) && map->isEmptyNotVisit(nextUp)) {
+                if (map->isEmptyNotVisit(curUp) && map->isEmptyNotVisit(nextUp))
+				{
                     map->getPoint(curUp).setVisit(true);
                     map->getPoint(nextUp).setVisit(true);
                     it = path.erase(it);
@@ -343,11 +356,14 @@ void Snake::findMaxPath(const Pos &from, const Pos &to, list<Direction> &path) {
                     it = path.insert(it, UP);
                     it = path.begin();
                     extended = true;
-                } else {
+                } 
+				else
+				{
                     Pos curDown = cur.getAdj(DOWN);
                     Pos nextDown = next.getAdj(DOWN);
                     // Check two points below
-                    if (map->isEmptyNotVisit(curDown) && map->isEmptyNotVisit(nextDown)) {
+                    if (map->isEmptyNotVisit(curDown) && map->isEmptyNotVisit(nextDown)) 
+					{
                         map->getPoint(curDown).setVisit(true);
                         map->getPoint(nextDown).setVisit(true);
                         it = path.erase(it);
@@ -361,7 +377,8 @@ void Snake::findMaxPath(const Pos &from, const Pos &to, list<Direction> &path) {
                 break;
             }
             case UP:
-            case DOWN: {
+            case DOWN:
+				{
                 Pos curLeft = cur.getAdj(LEFT);
                 Pos nextLeft = next.getAdj(LEFT);
                 // Check two points on the left
@@ -403,7 +420,8 @@ void Snake::findMaxPath(const Pos &from, const Pos &to, list<Direction> &path) {
 
 void Snake::buildPath(const Pos &from, const Pos &to, list<Direction> &path) const {
     Pos tmp = to, parent;
-    while (tmp != from) {
+    while (tmp != from)
+	{
         parent = map->getPoint(tmp).getParent();
         path.push_front(parent.getDirectionTo(tmp));
         tmp = parent;

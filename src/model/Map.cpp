@@ -78,25 +78,28 @@ bool Map::isSafe(const Pos &p) const {
                            || point.getType() == Point::Type::FOOD);
 }
 
-bool Map::isAllBody() const {
+bool Map::isAllBody() const 
+{
     SizeType row = getRowCount(), col = getColCount();
-    for (SizeType i = 1; i < row - 1; ++i) {
-        for (SizeType j = 1; j < col - 1; ++j) {
+    for (SizeType i = 1; i < row - 1; ++i) 
+        for (SizeType j = 1; j < col - 1; ++j)
+		{
             Point::Type type = content[i][j].getType();
             if (!(type == Point::Type::SNAKE_HEAD
                 || type == Point::Type::SNAKE_BODY
-                || type == Point::Type::SNAKE_TAIL)) {
-                return false;
-            }
+                || type == Point::Type::SNAKE_TAIL)) 
+                return false;   
         }
-    }
+    
     return true;
 }
 
-void Map::createRandFood() {
+void Map::createRandFood() 
+{
     auto random = util::Random<>::getInstance();
     vector<Pos> emptyPoints = getEmptyPoints();
-    if (!emptyPoints.empty()) {
+    if (!emptyPoints.empty()) 
+	{
         SizeType i = random->nextInt((SizeType)0, emptyPoints.size() - 1);
         createFood(emptyPoints[i]);
     }
